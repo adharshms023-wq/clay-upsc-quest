@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CurrentAffairsRouteImport } from './routes/current-affairs'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
@@ -44,6 +45,11 @@ const CurrentAffairsRoute = CurrentAffairsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgressRoute = ProgressRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/current-affairs'
     | '/privacy'
+    | '/profile'
     | '/progress'
     | '/resources'
     | '/syllabus'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/current-affairs'
     | '/privacy'
+    | '/profile'
     | '/progress'
     | '/resources'
     | '/syllabus'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/current-affairs'
     | '/privacy'
+    | '/profile'
     | '/progress'
     | '/resources'
     | '/syllabus'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CurrentAffairsRoute: typeof CurrentAffairsRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProfileRoute: typeof ProfileRoute
   ProgressRoute: typeof ProgressRoute
   ResourcesRoute: typeof ResourcesRoute
   SyllabusRoute: typeof SyllabusRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progress': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CurrentAffairsRoute: CurrentAffairsRoute,
   PrivacyRoute: PrivacyRoute,
+  ProfileRoute: ProfileRoute,
   ProgressRoute: ProgressRoute,
   ResourcesRoute: ResourcesRoute,
   SyllabusRoute: SyllabusRoute,
