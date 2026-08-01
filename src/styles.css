@@ -173,5 +173,56 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
+
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 12px;
+  }
+}
+
+@utility clay {
+  background: var(--card);
+  border-radius: 1.75rem;
+  box-shadow: var(--clay-shadow);
+}
+
+@utility clay-sm {
+  background: var(--card);
+  border-radius: 1.25rem;
+  box-shadow: var(--clay-shadow-sm);
+}
+
+@utility clay-lg {
+  background: var(--card);
+  border-radius: 2rem;
+  box-shadow: var(--clay-shadow-lg);
+}
+
+@utility clay-inset {
+  background: color-mix(in oklab, var(--background) 80%, var(--muted));
+  border-radius: 1.25rem;
+  box-shadow: var(--clay-inset);
+}
+
+@utility clay-press {
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--clay-shadow-lg);
+  }
+  &:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow: var(--clay-shadow-sm);
+  }
+}
+
+@utility text-balance-tight {
+  text-wrap: balance;
+  letter-spacing: -0.02em;
 }
