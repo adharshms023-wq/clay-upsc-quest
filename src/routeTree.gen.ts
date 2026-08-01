@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
+import { Route as MockTestsIndexRouteImport } from './routes/mock-tests.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const SyllabusRoute = SyllabusRouteImport.update({
   path: '/syllabus',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MockTestsIndexRoute = MockTestsIndexRouteImport.update({
+  id: '/mock-tests/',
+  path: '/mock-tests/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
+  '/mock-tests/': typeof MockTestsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
+  '/mock-tests': typeof MockTestsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
+  '/mock-tests/': typeof MockTestsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/resources' | '/syllabus'
+  fullPaths: '/' | '/resources' | '/syllabus' | '/mock-tests/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/resources' | '/syllabus'
-  id: '__root__' | '/' | '/resources' | '/syllabus'
+  to: '/' | '/resources' | '/syllabus' | '/mock-tests'
+  id: '__root__' | '/' | '/resources' | '/syllabus' | '/mock-tests/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ResourcesRoute: typeof ResourcesRoute
   SyllabusRoute: typeof SyllabusRoute
+  MockTestsIndexRoute: typeof MockTestsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SyllabusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mock-tests/': {
+      id: '/mock-tests/'
+      path: '/mock-tests'
+      fullPath: '/mock-tests/'
+      preLoaderRoute: typeof MockTestsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ResourcesRoute: ResourcesRoute,
   SyllabusRoute: SyllabusRoute,
+  MockTestsIndexRoute: MockTestsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
