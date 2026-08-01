@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { Clock, ListChecks, Play, Trophy } from "lucide-react";
 import { ClayCard } from "@/components/clay/ClayCard";
-import { ClayLinkButton } from "@/components/clay/ClayButton";
+
 import { useStudy } from "@/context/StudyContext";
 import { mockTests } from "@/data/mockTests";
 
