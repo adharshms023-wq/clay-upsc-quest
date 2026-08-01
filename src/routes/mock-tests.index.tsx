@@ -55,9 +55,13 @@ function MockTestsPage() {
                   <ListChecks className="size-3.5" aria-hidden="true" /> {t.questions.length} questions
                 </span>
               </div>
-              <ClayLinkButton to="/mock-tests/$testId" params={{ testId: t.id }} className="mt-5">
+              <Link
+                to="/mock-tests/$testId"
+                params={{ testId: t.id }}
+                className="clay-sm clay-press mt-5 inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-6 text-sm font-semibold text-primary-foreground"
+              >
                 <Play className="size-4" aria-hidden="true" /> Start test
-              </ClayLinkButton>
+              </Link>
             </ClayCard>
           </motion.div>
         ))}
