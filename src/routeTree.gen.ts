@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CurrentAffairsRouteImport } from './routes/current-affairs'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -33,6 +34,11 @@ const AboutRoute = AboutRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CurrentAffairsRoute = CurrentAffairsRouteImport.update({
+  id: '/current-affairs',
+  path: '/current-affairs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/current-affairs': typeof CurrentAffairsRoute
   '/privacy': typeof PrivacyRoute
   '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/current-affairs': typeof CurrentAffairsRoute
   '/privacy': typeof PrivacyRoute
   '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/current-affairs': typeof CurrentAffairsRoute
   '/privacy': typeof PrivacyRoute
   '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/current-affairs'
     | '/privacy'
     | '/progress'
     | '/resources'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/current-affairs'
     | '/privacy'
     | '/progress'
     | '/resources'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/current-affairs'
     | '/privacy'
     | '/progress'
     | '/resources'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  CurrentAffairsRoute: typeof CurrentAffairsRoute
   PrivacyRoute: typeof PrivacyRoute
   ProgressRoute: typeof ProgressRoute
   ResourcesRoute: typeof ResourcesRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/current-affairs': {
+      id: '/current-affairs'
+      path: '/current-affairs'
+      fullPath: '/current-affairs'
+      preLoaderRoute: typeof CurrentAffairsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  CurrentAffairsRoute: CurrentAffairsRoute,
   PrivacyRoute: PrivacyRoute,
   ProgressRoute: ProgressRoute,
   ResourcesRoute: ResourcesRoute,
