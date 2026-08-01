@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SyllabusRoute = SyllabusRouteImport.update({
@@ -25,27 +31,31 @@ const SyllabusRoute = SyllabusRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/syllabus'
+  fullPaths: '/' | '/resources' | '/syllabus'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/syllabus'
-  id: '__root__' | '/' | '/syllabus'
+  to: '/' | '/resources' | '/syllabus'
+  id: '__root__' | '/' | '/resources' | '/syllabus'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ResourcesRoute: typeof ResourcesRoute
   SyllabusRoute: typeof SyllabusRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/syllabus': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ResourcesRoute: ResourcesRoute,
   SyllabusRoute: SyllabusRoute,
 }
 export const routeTree = rootRouteImport
