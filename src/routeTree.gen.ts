@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
 import { Route as MockTestsIndexRouteImport } from './routes/mock-tests.index'
@@ -18,6 +19,11 @@ import { Route as MockTestsTestIdRouteImport } from './routes/mock-tests.$testId
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesRoute = ResourcesRouteImport.update({
@@ -43,6 +49,7 @@ const MockTestsTestIdRoute = MockTestsTestIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/progress': typeof ProgressRoute
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
@@ -66,12 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/resources' | '/syllabus' | '/mock-tests/$testId' | '/mock-tests/'
+    | '/'
+    | '/progress'
+    | '/resources'
+    | '/syllabus'
+    | '/mock-tests/$testId'
+    | '/mock-tests/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/resources' | '/syllabus' | '/mock-tests/$testId' | '/mock-tests'
+  to:
+    | '/'
+    | '/progress'
+    | '/resources'
+    | '/syllabus'
+    | '/mock-tests/$testId'
+    | '/mock-tests'
   id:
     | '__root__'
     | '/'
+    | '/progress'
     | '/resources'
     | '/syllabus'
     | '/mock-tests/$testId'
@@ -80,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProgressRoute: typeof ProgressRoute
   ResourcesRoute: typeof ResourcesRoute
   SyllabusRoute: typeof SyllabusRoute
   MockTestsTestIdRoute: typeof MockTestsTestIdRoute
@@ -93,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources': {
@@ -128,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProgressRoute: ProgressRoute,
   ResourcesRoute: ResourcesRoute,
   SyllabusRoute: SyllabusRoute,
   MockTestsTestIdRoute: MockTestsTestIdRoute,
