@@ -114,7 +114,7 @@ function TestRunner() {
 
   if (result) return <Analytics result={result} testId={test.id} />;
 
-  const q = test.questions[current];
+  const q = test.questions[current]!;
   const answered = Object.values(answers).filter((v) => v != null).length;
   const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
   const ss = String(remaining % 60).padStart(2, "0");
