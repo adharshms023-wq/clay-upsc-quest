@@ -36,6 +36,19 @@ function MockTestsPage() {
         only as honest as the attempt.
       </p>
 
+      <Link
+        to="/mock-tests/generate"
+        className="clay clay-press mt-6 flex items-center gap-4 bg-primary/25 p-5"
+      >
+        <span className="min-w-0 flex-1">
+          <span className="block text-lg font-bold">Generate an AI mock test</span>
+          <span className="mt-1 block text-sm text-muted-foreground">
+            Pick any topics, 10–100 questions, difficulty and question types — fresh paper every time.
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-xl">→</span>
+      </Link>
+
       <div className="mt-7 grid gap-5 md:grid-cols-2">
         {mockTests.map((t, i) => (
           <motion.div
