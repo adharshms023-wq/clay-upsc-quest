@@ -21,6 +21,7 @@ import { Route as SyllabusRouteImport } from './routes/syllabus'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as MockTestsIndexRouteImport } from './routes/mock-tests.index'
 import { Route as MockTestsTestIdRouteImport } from './routes/mock-tests.$testId'
+import { Route as MockTestsGenerateRouteImport } from './routes/mock-tests.generate'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +83,11 @@ const MockTestsTestIdRoute = MockTestsTestIdRouteImport.update({
   path: '/mock-tests/$testId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MockTestsGenerateRoute = MockTestsGenerateRouteImport.update({
+  id: '/mock-tests/generate',
+  path: '/mock-tests/generate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
+  '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests/': typeof MockTestsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
+  '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests': typeof MockTestsIndexRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
+  '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests/': typeof MockTestsIndexRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/syllabus'
     | '/terms'
     | '/mock-tests/$testId'
+    | '/mock-tests/generate'
     | '/mock-tests/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/syllabus'
     | '/terms'
     | '/mock-tests/$testId'
+    | '/mock-tests/generate'
     | '/mock-tests'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/syllabus'
     | '/terms'
     | '/mock-tests/$testId'
+    | '/mock-tests/generate'
     | '/mock-tests/'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   SyllabusRoute: typeof SyllabusRoute
   TermsRoute: typeof TermsRoute
   MockTestsTestIdRoute: typeof MockTestsTestIdRoute
+  MockTestsGenerateRoute: typeof MockTestsGenerateRoute
   MockTestsIndexRoute: typeof MockTestsIndexRoute
 }
 
@@ -272,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MockTestsTestIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mock-tests/generate': {
+      id: '/mock-tests/generate'
+      path: '/mock-tests/generate'
+      fullPath: '/mock-tests/generate'
+      preLoaderRoute: typeof MockTestsGenerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   SyllabusRoute: SyllabusRoute,
   TermsRoute: TermsRoute,
   MockTestsTestIdRoute: MockTestsTestIdRoute,
+  MockTestsGenerateRoute: MockTestsGenerateRoute,
   MockTestsIndexRoute: MockTestsIndexRoute,
 }
 export const routeTree = rootRouteImport
