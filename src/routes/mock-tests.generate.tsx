@@ -7,8 +7,8 @@ import { ClayCard } from "@/components/clay/ClayCard";
 import { ClayButton } from "@/components/clay/ClayButton";
 import { upscSyllabus, type SyllabusSubject } from "@/data/upscSyllabus";
 import { QUESTION_TYPES } from "@/lib/test-generation.server";
-import { generateMockTest } from "@/lib/test-generation.functions";
-import { existingStems, saveGeneratedTest } from "@/lib/questionBank";
+import { buildMockTest } from "@/lib/mock-test.functions";
+import { saveGeneratedTest } from "@/lib/questionBank";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/mock-tests/generate")({
@@ -84,39 +84,46 @@ function GeneratePage() {
       return;
     }
     setBusy(true);
-    const toastId = toast.loading(`Writing ${count} UPSC-standard questions…`);
+    const toastId = toast.loading(`Picking ${count} questions from the question bank…`);
     try {
-      const { questions } = await generateMockTest({
+      const { questions, available, expandedDifficulty } = await buildMockTest({
         data: {
-          topicIds: selected,
           count,
+          subjects: [],
+          topicIds: selected,
           difficulty,
           types,
-          mode,
-          avoid: existingStems(),
+          language: "English",
+          exam: null,
         },
       });
-      if (!questions.length) throw new Error("No questions returned");
+      if (!questions.length) {
+        toast.error("No questions in the bank match these filters yet.", { id: toastId });
+        return;
+      }
       const test = saveGeneratedTest({
-        name: `AI Test · ${scopeLabel} · ${difficulty}`,
+        name: `Mock Test · ${scopeLabel} · ${difficulty}`,
         durationMinutes: Math.max(10, Math.round(questions.length * 1.2)),
-        source: "Lovable AI",
+        source: "Question bank",
         config: { scopeLabel, topicIds: selected, count, difficulty, types, mode },
         questions,
       });
-      toast.success(`${questions.length} questions ready`, { id: toastId });
+      if (questions.length < count) {
+        toast.warning(
+          `Only ${questions.length} of ${count} questions available (${available} at ${difficulty}). Starting with what we have.`,
+          { id: toastId },
+        );
+      } else if (expandedDifficulty) {
+        toast.success(`${questions.length} questions ready — difficulty widened to fill the paper.`, {
+          id: toastId,
+        });
+      } else {
+        toast.success(`${questions.length} questions ready`, { id: toastId });
+      }
       navigate({ to: "/mock-tests/ai/$sessionId", params: { sessionId: test.id } });
     } catch (error) {
       console.error(error);
-      const message = error instanceof Error ? error.message : "Generation failed";
-      toast.error(
-        /429|rate/i.test(message)
-          ? "Too many requests right now — try again in a minute."
-          : /402|credit/i.test(message)
-            ? "AI credits are exhausted for this workspace."
-            : "Could not generate the test. Please try again.",
-        { id: toastId },
-      );
+      toast.error("Could not build the test from the question bank. Please try again.", { id: toastId });
     } finally {
       setBusy(false);
     }
