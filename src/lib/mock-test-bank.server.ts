@@ -51,7 +51,7 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
       _topic_ids: filters.topicIds.length ? filters.topicIds : undefined,
       _difficulties: ladder.slice(0, depth),
       _types: filters.types.length ? filters.types : undefined,
-      _language: filters.language || null,
+      _language: filters.language || undefined,
       _exam: filters.exam ?? undefined,
       _exclude: collected.length ? collected.map((q) => q.id) : undefined,
     });
@@ -70,7 +70,7 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
     _topic_ids: filters.topicIds.length ? filters.topicIds : undefined,
     _difficulties: [filters.difficulty],
     _types: filters.types.length ? filters.types : undefined,
-    _language: filters.language || null,
+    _language: filters.language || undefined,
     _exam: filters.exam ?? undefined,
   });
 
