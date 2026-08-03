@@ -47,13 +47,13 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
 
     const { data, error } = await supabase.rpc("pick_random_questions", {
       _limit: remaining,
-      _subjects: filters.subjects.length ? filters.subjects : null,
-      _topic_ids: filters.topicIds.length ? filters.topicIds : null,
+      _subjects: filters.subjects.length ? filters.subjects : undefined,
+      _topic_ids: filters.topicIds.length ? filters.topicIds : undefined,
       _difficulties: ladder.slice(0, depth),
-      _types: filters.types.length ? filters.types : null,
+      _types: filters.types.length ? filters.types : undefined,
       _language: filters.language || null,
-      _exam: filters.exam,
-      _exclude: collected.length ? collected.map((q) => q.id) : null,
+      _exam: filters.exam ?? undefined,
+      _exclude: collected.length ? collected.map((q) => q.id) : undefined,
     });
     if (error) throw new Error(error.message);
 
@@ -66,12 +66,12 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
   }
 
   const { data: available } = await supabase.rpc("count_matching_questions", {
-    _subjects: filters.subjects.length ? filters.subjects : null,
-    _topic_ids: filters.topicIds.length ? filters.topicIds : null,
+    _subjects: filters.subjects.length ? filters.subjects : undefined,
+    _topic_ids: filters.topicIds.length ? filters.topicIds : undefined,
     _difficulties: [filters.difficulty],
-    _types: filters.types.length ? filters.types : null,
+    _types: filters.types.length ? filters.types : undefined,
     _language: filters.language || null,
-    _exam: filters.exam,
+    _exam: filters.exam ?? undefined,
   });
 
   const questions = shuffle(collected).map(toGenerated).map(shuffleOptions);
