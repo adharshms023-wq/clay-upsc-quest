@@ -1,0 +1,2 @@
+ALTER FUNCTION public.pick_random_questions(integer, text[], text[], text[], text[], text, text, uuid[]) SECURITY INVOKER;
+ALTER FUNCTION public.count_matching_questions(text[], text[], text[], text[], text, text) SECURITY INVOKER;
