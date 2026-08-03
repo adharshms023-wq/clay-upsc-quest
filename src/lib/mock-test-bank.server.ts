@@ -40,20 +40,24 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
   const seen = new Set<string>();
   let expanded = false;
 
+  const scope = {
+    ...(filters.subjects.length ? { _subjects: filters.subjects } : {}),
+    ...(filters.topicIds.length ? { _topic_ids: filters.topicIds } : {}),
+    ...(filters.types.length ? { _types: filters.types } : {}),
+    ...(filters.language ? { _language: filters.language } : {}),
+    ...(filters.exam ? { _exam: filters.exam } : {}),
+  };
+
   // Widen the difficulty window step by step until the paper is full.
   for (let depth = 1; depth <= ladder.length; depth++) {
     const remaining = filters.count - collected.length;
     if (remaining <= 0) break;
 
     const { data, error } = await supabase.rpc("pick_random_questions", {
+      ...scope,
       _limit: remaining,
-      _subjects: filters.subjects.length ? filters.subjects : undefined,
-      _topic_ids: filters.topicIds.length ? filters.topicIds : undefined,
       _difficulties: ladder.slice(0, depth),
-      _types: filters.types.length ? filters.types : undefined,
-      _language: filters.language || undefined,
-      _exam: filters.exam ?? undefined,
-      _exclude: collected.length ? collected.map((q) => q.id) : undefined,
+      ...(collected.length ? { _exclude: collected.map((q) => q.id) } : {}),
     });
     if (error) throw new Error(error.message);
 
@@ -66,12 +70,8 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
   }
 
   const { data: available } = await supabase.rpc("count_matching_questions", {
-    _subjects: filters.subjects.length ? filters.subjects : undefined,
-    _topic_ids: filters.topicIds.length ? filters.topicIds : undefined,
+    ...scope,
     _difficulties: [filters.difficulty],
-    _types: filters.types.length ? filters.types : undefined,
-    _language: filters.language || undefined,
-    _exam: filters.exam ?? undefined,
   });
 
   const questions = shuffle(collected).map(toGenerated).map(shuffleOptions);
