@@ -11,14 +11,14 @@ export async function assertAdmin(supabase: Client, userId: string) {
 }
 
 export type SaveQuestionInput = GeneratedQuestion & {
-  language?: string;
-  exam?: string;
-  year?: number | null;
-  marks?: number;
-  negativeMarks?: number;
-  subtopic?: string;
-  source?: string;
-  status?: string;
+  language?: string | undefined;
+  exam?: string | undefined;
+  year?: number | null | undefined;
+  marks?: number | undefined;
+  negativeMarks?: number | undefined;
+  subtopic?: string | undefined;
+  source?: string | undefined;
+  status?: string | undefined;
 };
 
 export async function saveQuestionsToBank(
