@@ -1,6 +1,8 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, GraduationCap, Home, Library, TrendingUp, User } from "lucide-react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { BookOpen, GraduationCap, Home, Library, LogIn, LogOut, TrendingUp, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export const navItems = [
   { to: "/", label: "Home", icon: Home },
@@ -45,8 +47,47 @@ export function TopNav() {
             {label}
           </Link>
         ))}
+        <AuthControl />
       </nav>
     </header>
+  );
+}
+
+function AuthControl() {
+  const navigate = useNavigate();
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setSignedIn(!!session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
+  if (signedIn === null) return null;
+
+  if (!signedIn) {
+    return (
+      <Link
+        to="/auth"
+        className="ml-1 flex items-center gap-2 rounded-full bg-primary/30 px-4 py-2 text-sm font-semibold shadow-[var(--clay-shadow-sm)]"
+      >
+        <LogIn className="size-4" aria-hidden="true" />
+        Sign in
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      onClick={async () => {
+        await supabase.auth.signOut();
+        navigate({ to: "/auth", replace: true });
+      }}
+      className="ml-1 flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
+    >
+      <LogOut className="size-4" aria-hidden="true" />
+      Sign out
+    </button>
   );
 }
 
