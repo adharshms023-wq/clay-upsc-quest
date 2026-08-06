@@ -21,12 +21,25 @@ export type TestResult = {
   answers: Record<string, number | null>;
 };
 
+export type MissedQuestion = {
+  id: string;
+  question: string;
+  options: string[];
+  answerIndex: number;
+  explanation: string;
+  subject: string;
+  topic: string;
+  difficulty: string;
+  missedAt: string;
+};
+
 type StudyState = {
   topics: Record<string, TopicProgress>;
   bookmarks: string[];
   recentlyViewed: string[];
   readLater: string[];
   results: TestResult[];
+  missed: MissedQuestion[];
   studyLog: Record<string, number>;
   goals: { daily: number; weekly: number; monthly: number };
   profile: { name: string; target: string };
@@ -40,6 +53,7 @@ const defaultState: StudyState = {
   recentlyViewed: [],
   readLater: [],
   results: [],
+  missed: [],
   studyLog: {},
   goals: { daily: 4, weekly: 24, monthly: 100 },
   profile: { name: "Aspirant", target: "CSE 2027" },
@@ -56,6 +70,9 @@ type StudyContextValue = StudyState & {
   markViewed: (id: string) => void;
   toggleReadLater: (id: string) => void;
   addResult: (result: TestResult) => void;
+  addMissed: (questions: MissedQuestion[]) => void;
+  clearMissed: (ids?: string[]) => void;
+  logPractice: (hours: number) => void;
   setGoals: (goals: Partial<StudyState["goals"]>) => void;
   setProfile: (profile: Partial<StudyState["profile"]>) => void;
   resetAll: () => void;
@@ -158,6 +175,17 @@ export function StudyProvider({ children }: { children: ReactNode }) {
         }));
       },
       setGoals: (goals) => setState((s) => ({ ...s, goals: { ...s.goals, ...goals } })),
+      addMissed: (questions) =>
+        setState((s) => {
+          const ids = new Set(questions.map((q) => q.id));
+          return { ...s, missed: [...questions, ...s.missed.filter((m) => !ids.has(m.id))].slice(0, 200) };
+        }),
+      clearMissed: (ids) =>
+        setState((s) => ({
+          ...s,
+          missed: ids ? s.missed.filter((m) => !ids.includes(m.id)) : [],
+        })),
+      logPractice: (hours) => logActivity(hours),
       setProfile: (profile) => setState((s) => ({ ...s, profile: { ...s.profile, ...profile } })),
       resetAll: () => setState(defaultState),
     };

@@ -183,6 +183,14 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      question_bank_stats: {
+        Args: never
+        Returns: {
+          difficulty: string
+          subject: string
+          total: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

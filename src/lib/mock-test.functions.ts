@@ -21,3 +21,9 @@ export const buildMockTest = createServerFn({ method: "POST" })
     const { fetchMockTestQuestions } = await import("./mock-test-bank.server");
     return fetchMockTestQuestions(data);
   });
+
+/** Public coverage summary of the question bank — how many approved questions exist. */
+export const getBankStats = createServerFn({ method: "GET" }).handler(async () => {
+  const { fetchBankStats } = await import("./mock-test-bank.server");
+  return fetchBankStats();
+});
