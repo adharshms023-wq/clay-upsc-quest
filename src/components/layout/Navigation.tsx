@@ -1,17 +1,23 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { BookOpen, GraduationCap, Home, Library, LogIn, LogOut, TrendingUp, User } from "lucide-react";
+import { BookOpen, GraduationCap, Home, Library, LogIn, LogOut, TrendingUp, User, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 
 export const navItems = [
   { to: "/", label: "Home", icon: Home },
   { to: "/syllabus", label: "Syllabus", icon: BookOpen },
+  { to: "/practice", label: "Practice", icon: Zap },
   { to: "/resources", label: "Resources", icon: Library },
   { to: "/mock-tests", label: "Mock Tests", icon: GraduationCap },
   { to: "/progress", label: "Progress", icon: TrendingUp },
   { to: "/profile", label: "Profile", icon: User },
 ] as const;
+
+/** Bottom bar keeps the five highest-traffic destinations so tap targets stay large. */
+const mobileNavItems = navItems.filter((i) =>
+  ["/", "/syllabus", "/practice", "/mock-tests", "/progress"].includes(i.to),
+);
 
 function useActive() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -98,7 +104,7 @@ export function BottomNav() {
       aria-label="Mobile navigation"
       className="clay fixed inset-x-3 bottom-3 z-50 flex items-center justify-between gap-0.5 rounded-[28px] px-2 py-2 md:hidden"
     >
-      {navItems.map(({ to, label, icon: Icon }) => (
+      {mobileNavItems.map(({ to, label, icon: Icon }) => (
         <Link
           key={to}
           to={to}
