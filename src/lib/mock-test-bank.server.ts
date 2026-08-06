@@ -34,6 +34,29 @@ const LADDER: Record<string, string[]> = {
 
 export async function fetchMockTestQuestions(filters: BankFilters) {
   const supabase = createPublicClient();
+  return fetchWithLadder(supabase, filters);
+}
+
+/** Public, read-only coverage summary of the approved question bank. */
+export async function fetchBankStats() {
+  const supabase = createPublicClient();
+  const { data, error } = await supabase.rpc("question_bank_stats");
+  if (error) throw new Error(error.message);
+  const rows = (data ?? []) as { subject: string; difficulty: string; total: number }[];
+  const bySubject = new Map<string, number>();
+  for (const row of rows) bySubject.set(row.subject, (bySubject.get(row.subject) ?? 0) + row.total);
+  return {
+    total: rows.reduce((a, r) => a + r.total, 0),
+    subjects: [...bySubject.entries()]
+      .map(([subject, total]) => ({ subject, total }))
+      .sort((a, b) => b.total - a.total),
+  };
+}
+
+async function fetchWithLadder(
+  supabase: ReturnType<typeof createPublicClient>,
+  filters: BankFilters,
+) {
   const ladder = LADDER[filters.difficulty] ?? [filters.difficulty];
 
   const collected: QuestionRow[] = [];
