@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { Clock, ListChecks, Play, Trophy } from "lucide-react";
+import { Clock, Database, ListChecks, Play, Trophy, Zap } from "lucide-react";
 import { ClayCard } from "@/components/clay/ClayCard";
+import { getBankStats } from "@/lib/mock-test.functions";
 
 import { useStudy } from "@/context/StudyContext";
 import { mockTests } from "@/data/mockTests";
@@ -27,6 +29,11 @@ export const Route = createFileRoute("/mock-tests/")({
 
 function MockTestsPage() {
   const { results, hydrated } = useStudy();
+  const { data: bank } = useQuery({
+    queryKey: ["bank-stats"],
+    queryFn: () => getBankStats(),
+    staleTime: 5 * 60 * 1000,
+  });
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 pt-6">
@@ -41,13 +48,46 @@ function MockTestsPage() {
         className="clay clay-press mt-6 flex items-center gap-4 bg-primary/25 p-5"
       >
         <span className="min-w-0 flex-1">
-          <span className="block text-lg font-bold">Generate an AI mock test</span>
+          <span className="block text-lg font-bold">Build a custom mock test</span>
           <span className="mt-1 block text-sm text-muted-foreground">
             Pick any topics, 10–100 questions, difficulty and question types — fresh paper every time.
           </span>
         </span>
         <span aria-hidden="true" className="text-xl">→</span>
       </Link>
+
+      <Link
+        to="/practice"
+        className="clay clay-press mt-4 flex items-center gap-4 bg-secondary/40 p-5"
+      >
+        <Zap className="size-5 shrink-0" aria-hidden="true" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-lg font-bold">Daily practice — 10 questions</span>
+          <span className="mt-1 block text-sm text-muted-foreground">
+            Quick set with instant explanations, and automatic revision of everything you got wrong.
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-xl">→</span>
+      </Link>
+
+      {bank && bank.total > 0 ? (
+        <ClayCard size="sm" className="mt-4">
+          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+            <Database className="size-3.5" aria-hidden="true" />
+            Question bank · {bank.total} approved questions
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {bank.subjects.map((s) => (
+              <span
+                key={s.subject}
+                className="clay-inset rounded-full px-3 py-1.5 text-xs font-semibold"
+              >
+                {s.subject} · {s.total}
+              </span>
+            ))}
+          </div>
+        </ClayCard>
+      ) : null}
 
       <div className="mt-7 grid gap-5 md:grid-cols-2">
         {mockTests.map((t, i) => (

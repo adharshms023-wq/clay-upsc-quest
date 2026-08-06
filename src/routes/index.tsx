@@ -11,6 +11,7 @@ import {
   Target,
   TrendingUp,
   Trophy,
+  Zap,
 } from "lucide-react";
 import { ClayCard } from "@/components/clay/ClayCard";
 import { ClayLinkButton } from "@/components/clay/ClayButton";
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/")({
 
 const modules = [
   { to: "/syllabus", title: "UPSC Syllabus", copy: "Prelims and Mains, topic by topic.", icon: BookOpen, tone: "primary" as const },
+  { to: "/practice", title: "Daily Practice", copy: "10 questions with instant answers.", icon: Zap, tone: "secondary" as const },
   { to: "/resources", title: "Resources", copy: "NCERTs, standard books and notes.", icon: Library, tone: "secondary" as const },
   { to: "/mock-tests", title: "Mock Tests", copy: "Exam-style tests with analytics.", icon: GraduationCap, tone: "accent" as const },
   { to: "/resources", title: "Previous Papers", copy: "A decade of PYQs, sorted.", icon: ScrollText, tone: "warning" as const },
