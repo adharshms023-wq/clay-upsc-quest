@@ -21,6 +21,7 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AdminCurrentAffairsRouteImport } from './routes/admin.current-affairs'
 import { Route as AdminQuestionsRouteImport } from './routes/admin.questions'
 import { Route as MockTestsIndexRouteImport } from './routes/mock-tests.index'
 import { Route as MockTestsTestIdRouteImport } from './routes/mock-tests.$testId'
@@ -88,6 +89,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCurrentAffairsRoute = AdminCurrentAffairsRouteImport.update({
+  id: '/admin/current-affairs',
+  path: '/admin/current-affairs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminQuestionsRoute = AdminQuestionsRouteImport.update({
   id: '/admin/questions',
   path: '/admin/questions',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
+  '/admin/current-affairs': typeof AdminCurrentAffairsRoute
   '/admin/questions': typeof AdminQuestionsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
+  '/admin/current-affairs': typeof AdminCurrentAffairsRoute
   '/admin/questions': typeof AdminQuestionsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
+  '/admin/current-affairs': typeof AdminCurrentAffairsRoute
   '/admin/questions': typeof AdminQuestionsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/syllabus'
     | '/terms'
+    | '/admin/current-affairs'
     | '/admin/questions'
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/syllabus'
     | '/terms'
+    | '/admin/current-affairs'
     | '/admin/questions'
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/syllabus'
     | '/terms'
+    | '/admin/current-affairs'
     | '/admin/questions'
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
@@ -257,6 +269,7 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   SyllabusRoute: typeof SyllabusRoute
   TermsRoute: typeof TermsRoute
+  AdminCurrentAffairsRoute: typeof AdminCurrentAffairsRoute
   AdminQuestionsRoute: typeof AdminQuestionsRoute
   MockTestsTestIdRoute: typeof MockTestsTestIdRoute
   MockTestsGenerateRoute: typeof MockTestsGenerateRoute
@@ -351,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/current-affairs': {
+      id: '/admin/current-affairs'
+      path: '/admin/current-affairs'
+      fullPath: '/admin/current-affairs'
+      preLoaderRoute: typeof AdminCurrentAffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/questions': {
       id: '/admin/questions'
       path: '/admin/questions'
@@ -409,6 +429,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   SyllabusRoute: SyllabusRoute,
   TermsRoute: TermsRoute,
+  AdminCurrentAffairsRoute: AdminCurrentAffairsRoute,
   AdminQuestionsRoute: AdminQuestionsRoute,
   MockTestsTestIdRoute: MockTestsTestIdRoute,
   MockTestsGenerateRoute: MockTestsGenerateRoute,
