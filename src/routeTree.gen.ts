@@ -25,6 +25,7 @@ import { Route as AdminQuestionsRouteImport } from './routes/admin.questions'
 import { Route as MockTestsIndexRouteImport } from './routes/mock-tests.index'
 import { Route as MockTestsTestIdRouteImport } from './routes/mock-tests.$testId'
 import { Route as MockTestsGenerateRouteImport } from './routes/mock-tests.generate'
+import { Route as ApiPublicCronCurrentAffairsRouteImport } from './routes/api/public/cron-current-affairs'
 import { Route as MockTestsAiSessionIdRouteImport } from './routes/mock-tests.ai.$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -107,6 +108,12 @@ const MockTestsGenerateRoute = MockTestsGenerateRouteImport.update({
   path: '/mock-tests/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronCurrentAffairsRoute =
+  ApiPublicCronCurrentAffairsRouteImport.update({
+    id: '/api/public/cron-current-affairs',
+    path: '/api/public/cron-current-affairs',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const MockTestsAiSessionIdRoute = MockTestsAiSessionIdRouteImport.update({
   id: '/mock-tests/ai/$sessionId',
   path: '/mock-tests/ai/$sessionId',
@@ -130,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests/': typeof MockTestsIndexRoute
+  '/api/public/cron-current-affairs': typeof ApiPublicCronCurrentAffairsRoute
   '/mock-tests/ai/$sessionId': typeof MockTestsAiSessionIdRoute
 }
 export interface FileRoutesByTo {
@@ -149,6 +157,7 @@ export interface FileRoutesByTo {
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests': typeof MockTestsIndexRoute
+  '/api/public/cron-current-affairs': typeof ApiPublicCronCurrentAffairsRoute
   '/mock-tests/ai/$sessionId': typeof MockTestsAiSessionIdRoute
 }
 export interface FileRoutesById {
@@ -169,6 +178,7 @@ export interface FileRoutesById {
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests/': typeof MockTestsIndexRoute
+  '/api/public/cron-current-affairs': typeof ApiPublicCronCurrentAffairsRoute
   '/mock-tests/ai/$sessionId': typeof MockTestsAiSessionIdRoute
 }
 export interface FileRouteTypes {
@@ -190,6 +200,7 @@ export interface FileRouteTypes {
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
     | '/mock-tests/'
+    | '/api/public/cron-current-affairs'
     | '/mock-tests/ai/$sessionId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
     | '/mock-tests'
+    | '/api/public/cron-current-affairs'
     | '/mock-tests/ai/$sessionId'
   id:
     | '__root__'
@@ -228,6 +240,7 @@ export interface FileRouteTypes {
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
     | '/mock-tests/'
+    | '/api/public/cron-current-affairs'
     | '/mock-tests/ai/$sessionId'
   fileRoutesById: FileRoutesById
 }
@@ -248,6 +261,7 @@ export interface RootRouteChildren {
   MockTestsTestIdRoute: typeof MockTestsTestIdRoute
   MockTestsGenerateRoute: typeof MockTestsGenerateRoute
   MockTestsIndexRoute: typeof MockTestsIndexRoute
+  ApiPublicCronCurrentAffairsRoute: typeof ApiPublicCronCurrentAffairsRoute
   MockTestsAiSessionIdRoute: typeof MockTestsAiSessionIdRoute
 }
 
@@ -365,6 +379,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MockTestsGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron-current-affairs': {
+      id: '/api/public/cron-current-affairs'
+      path: '/api/public/cron-current-affairs'
+      fullPath: '/api/public/cron-current-affairs'
+      preLoaderRoute: typeof ApiPublicCronCurrentAffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mock-tests/ai/$sessionId': {
       id: '/mock-tests/ai/$sessionId'
       path: '/mock-tests/ai/$sessionId'
@@ -392,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   MockTestsTestIdRoute: MockTestsTestIdRoute,
   MockTestsGenerateRoute: MockTestsGenerateRoute,
   MockTestsIndexRoute: MockTestsIndexRoute,
+  ApiPublicCronCurrentAffairsRoute: ApiPublicCronCurrentAffairsRoute,
   MockTestsAiSessionIdRoute: MockTestsAiSessionIdRoute,
 }
 export const routeTree = rootRouteImport
