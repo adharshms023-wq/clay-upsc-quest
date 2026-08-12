@@ -8,6 +8,13 @@ async function assertAdminContext(context: { supabase: unknown; userId: string }
   await assertAdmin(context.supabase as any, context.userId);
 }
 
+/** Drops undefined keys so partial updates satisfy exactOptionalPropertyTypes. */
+function compact<T extends Record<string, unknown>>(input: T) {
+  return Object.fromEntries(Object.entries(input).filter(([, v]) => v !== undefined)) as {
+    [K in keyof T]: Exclude<T[K], undefined>;
+  };
+}
+
 /** ADMIN: poll every active RSS source and store new articles. */
 export const caRunIngestion = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -101,10 +108,10 @@ export const caUpdateArticle = createServerFn({ method: "POST" })
     const { id, upscRelevance, ...rest } = data;
     const { error } = await context.supabase
       .from("current_affairs")
-      .update({
+      .update(compact({
         ...rest,
         ...(upscRelevance === undefined ? {} : { upsc_relevance: upscRelevance }),
-      })
+      }))
       .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -163,10 +170,10 @@ export const caReviewQuestion = createServerFn({ method: "POST" })
     const { id, correctAnswer, ...rest } = data;
     const { error } = await context.supabase
       .from("questions")
-      .update({
+      .update(compact({
         ...rest,
         ...(correctAnswer === undefined ? {} : { correct_answer: correctAnswer }),
-      })
+      }))
       .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };
