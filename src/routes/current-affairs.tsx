@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { BookmarkPlus, FileDown, Newspaper } from "lucide-react";
 import { toast } from "sonner";
 import { ClayCard } from "@/components/clay/ClayCard";
@@ -31,6 +31,12 @@ function CurrentAffairsPage() {
       <p className="mt-2 max-w-xl text-sm text-muted-foreground">
         One short read a day, linked back to the static syllabus.
       </p>
+      <Link
+        to="/daily-quiz"
+        className="clay-sm clay-press mt-4 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary/30 px-5 text-sm font-semibold"
+      >
+        <Newspaper className="size-4" aria-hidden="true" /> Take today's current affairs quiz
+      </Link>
 
       <div className="mt-7 space-y-4">
         {currentAffairs.map((n) => (

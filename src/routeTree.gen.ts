@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CurrentAffairsRouteImport } from './routes/current-affairs'
+import { Route as DailyQuizRouteImport } from './routes/daily-quiz'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -52,6 +53,11 @@ const ContactRoute = ContactRouteImport.update({
 const CurrentAffairsRoute = CurrentAffairsRouteImport.update({
   id: '/current-affairs',
   path: '/current-affairs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DailyQuizRoute = DailyQuizRouteImport.update({
+  id: '/daily-quiz',
+  path: '/daily-quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PracticeRoute = PracticeRouteImport.update({
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
+  '/daily-quiz': typeof DailyQuizRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
+  '/daily-quiz': typeof DailyQuizRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
+  '/daily-quiz': typeof DailyQuizRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/current-affairs'
+    | '/daily-quiz'
     | '/practice'
     | '/privacy'
     | '/profile'
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/current-affairs'
+    | '/daily-quiz'
     | '/practice'
     | '/privacy'
     | '/profile'
@@ -240,6 +251,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/current-affairs'
+    | '/daily-quiz'
     | '/practice'
     | '/privacy'
     | '/profile'
@@ -262,6 +274,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   CurrentAffairsRoute: typeof CurrentAffairsRoute
+  DailyQuizRoute: typeof DailyQuizRoute
   PracticeRoute: typeof PracticeRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/current-affairs'
       fullPath: '/current-affairs'
       preLoaderRoute: typeof CurrentAffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daily-quiz': {
+      id: '/daily-quiz'
+      path: '/daily-quiz'
+      fullPath: '/daily-quiz'
+      preLoaderRoute: typeof DailyQuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/practice': {
@@ -422,6 +442,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   CurrentAffairsRoute: CurrentAffairsRoute,
+  DailyQuizRoute: DailyQuizRoute,
   PracticeRoute: PracticeRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
