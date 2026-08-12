@@ -14,11 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
+      ca_sources: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          feed_url: string
+          id: string
+          last_error: string | null
+          last_fetched_at: string | null
+          source_name: string
+          source_url: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          feed_url: string
+          id?: string
+          last_error?: string | null
+          last_fetched_at?: string | null
+          source_name: string
+          source_url?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          feed_url?: string
+          id?: string
+          last_error?: string | null
+          last_fetched_at?: string | null
+          source_name?: string
+          source_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      current_affairs: {
+        Row: {
+          category: string
+          content: string
+          content_hash: string
+          created_at: string
+          id: string
+          image_url: string | null
+          last_error: string | null
+          published_at: string
+          question_count: number
+          source: string
+          source_url: string
+          status: string
+          subject: string
+          subtopic: string
+          summary: string
+          tags: string[]
+          title: string
+          topic: string
+          updated_at: string
+          upsc_relevance: number
+        }
+        Insert: {
+          category?: string
+          content?: string
+          content_hash: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          last_error?: string | null
+          published_at?: string
+          question_count?: number
+          source?: string
+          source_url: string
+          status?: string
+          subject?: string
+          subtopic?: string
+          summary?: string
+          tags?: string[]
+          title: string
+          topic?: string
+          updated_at?: string
+          upsc_relevance?: number
+        }
+        Update: {
+          category?: string
+          content?: string
+          content_hash?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          last_error?: string | null
+          published_at?: string
+          question_count?: number
+          source?: string
+          source_url?: string
+          status?: string
+          subject?: string
+          subtopic?: string
+          summary?: string
+          tags?: string[]
+          title?: string
+          topic?: string
+          updated_at?: string
+          upsc_relevance?: number
+        }
+        Relationships: []
+      }
       questions: {
         Row: {
           correct_answer: number
           created_at: string
           created_by: string | null
+          current_affair_id: string | null
           difficulty: string
           exam: string
           explanation: string
@@ -32,6 +141,8 @@ export type Database = {
           question_source: string
           question_type: string
           solving_seconds: number
+          source_type: string
+          source_url: string | null
           status: string
           subject: string
           subtopic: string
@@ -45,6 +156,7 @@ export type Database = {
           correct_answer: number
           created_at?: string
           created_by?: string | null
+          current_affair_id?: string | null
           difficulty?: string
           exam?: string
           explanation?: string
@@ -58,6 +170,8 @@ export type Database = {
           question_source?: string
           question_type?: string
           solving_seconds?: number
+          source_type?: string
+          source_url?: string | null
           status?: string
           subject: string
           subtopic?: string
@@ -71,6 +185,7 @@ export type Database = {
           correct_answer?: number
           created_at?: string
           created_by?: string | null
+          current_affair_id?: string | null
           difficulty?: string
           exam?: string
           explanation?: string
@@ -84,6 +199,8 @@ export type Database = {
           question_source?: string
           question_type?: string
           solving_seconds?: number
+          source_type?: string
+          source_url?: string | null
           status?: string
           subject?: string
           subtopic?: string
@@ -93,7 +210,15 @@ export type Database = {
           updated_at?: string
           year?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "questions_current_affair_id_fkey"
+            columns: ["current_affair_id"]
+            isOneToOne: false
+            referencedRelation: "current_affairs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -132,12 +257,63 @@ export type Database = {
         }
         Returns: number
       }
+      current_affairs_pipeline_stats: {
+        Args: never
+        Returns: {
+          status: string
+          total: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      pick_current_affairs_questions: {
+        Args: {
+          _difficulties?: string[]
+          _exclude?: string[]
+          _limit: number
+          _since?: string
+          _subjects?: string[]
+        }
+        Returns: {
+          correct_answer: number
+          created_at: string
+          created_by: string | null
+          current_affair_id: string | null
+          difficulty: string
+          exam: string
+          explanation: string
+          id: string
+          language: string
+          marks: number
+          negative_marks: number
+          options: Json
+          question: string
+          question_key: string | null
+          question_source: string
+          question_type: string
+          solving_seconds: number
+          source_type: string
+          source_url: string | null
+          status: string
+          subject: string
+          subtopic: string
+          tags: string[]
+          topic: string
+          topic_id: string
+          updated_at: string
+          year: number | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "questions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       pick_random_questions: {
         Args: {
@@ -154,6 +330,7 @@ export type Database = {
           correct_answer: number
           created_at: string
           created_by: string | null
+          current_affair_id: string | null
           difficulty: string
           exam: string
           explanation: string
@@ -167,6 +344,8 @@ export type Database = {
           question_source: string
           question_type: string
           solving_seconds: number
+          source_type: string
+          source_url: string | null
           status: string
           subject: string
           subtopic: string

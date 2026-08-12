@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CurrentAffairsRouteImport } from './routes/current-affairs'
+import { Route as DailyQuizRouteImport } from './routes/daily-quiz'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -21,10 +22,12 @@ import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SyllabusRouteImport } from './routes/syllabus'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AdminCurrentAffairsRouteImport } from './routes/admin.current-affairs'
 import { Route as AdminQuestionsRouteImport } from './routes/admin.questions'
 import { Route as MockTestsIndexRouteImport } from './routes/mock-tests.index'
 import { Route as MockTestsTestIdRouteImport } from './routes/mock-tests.$testId'
 import { Route as MockTestsGenerateRouteImport } from './routes/mock-tests.generate'
+import { Route as ApiPublicCronCurrentAffairsRouteImport } from './routes/api/public/cron-current-affairs'
 import { Route as MockTestsAiSessionIdRouteImport } from './routes/mock-tests.ai.$sessionId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -50,6 +53,11 @@ const ContactRoute = ContactRouteImport.update({
 const CurrentAffairsRoute = CurrentAffairsRouteImport.update({
   id: '/current-affairs',
   path: '/current-affairs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DailyQuizRoute = DailyQuizRouteImport.update({
+  id: '/daily-quiz',
+  path: '/daily-quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PracticeRoute = PracticeRouteImport.update({
@@ -87,6 +95,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCurrentAffairsRoute = AdminCurrentAffairsRouteImport.update({
+  id: '/admin/current-affairs',
+  path: '/admin/current-affairs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminQuestionsRoute = AdminQuestionsRouteImport.update({
   id: '/admin/questions',
   path: '/admin/questions',
@@ -107,6 +120,12 @@ const MockTestsGenerateRoute = MockTestsGenerateRouteImport.update({
   path: '/mock-tests/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCronCurrentAffairsRoute =
+  ApiPublicCronCurrentAffairsRouteImport.update({
+    id: '/api/public/cron-current-affairs',
+    path: '/api/public/cron-current-affairs',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const MockTestsAiSessionIdRoute = MockTestsAiSessionIdRouteImport.update({
   id: '/mock-tests/ai/$sessionId',
   path: '/mock-tests/ai/$sessionId',
@@ -119,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
+  '/daily-quiz': typeof DailyQuizRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
@@ -126,10 +146,12 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
+  '/admin/current-affairs': typeof AdminCurrentAffairsRoute
   '/admin/questions': typeof AdminQuestionsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests/': typeof MockTestsIndexRoute
+  '/api/public/cron-current-affairs': typeof ApiPublicCronCurrentAffairsRoute
   '/mock-tests/ai/$sessionId': typeof MockTestsAiSessionIdRoute
 }
 export interface FileRoutesByTo {
@@ -138,6 +160,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
+  '/daily-quiz': typeof DailyQuizRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
@@ -145,10 +168,12 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
+  '/admin/current-affairs': typeof AdminCurrentAffairsRoute
   '/admin/questions': typeof AdminQuestionsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests': typeof MockTestsIndexRoute
+  '/api/public/cron-current-affairs': typeof ApiPublicCronCurrentAffairsRoute
   '/mock-tests/ai/$sessionId': typeof MockTestsAiSessionIdRoute
 }
 export interface FileRoutesById {
@@ -158,6 +183,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/current-affairs': typeof CurrentAffairsRoute
+  '/daily-quiz': typeof DailyQuizRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
@@ -165,10 +191,12 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/syllabus': typeof SyllabusRoute
   '/terms': typeof TermsRoute
+  '/admin/current-affairs': typeof AdminCurrentAffairsRoute
   '/admin/questions': typeof AdminQuestionsRoute
   '/mock-tests/$testId': typeof MockTestsTestIdRoute
   '/mock-tests/generate': typeof MockTestsGenerateRoute
   '/mock-tests/': typeof MockTestsIndexRoute
+  '/api/public/cron-current-affairs': typeof ApiPublicCronCurrentAffairsRoute
   '/mock-tests/ai/$sessionId': typeof MockTestsAiSessionIdRoute
 }
 export interface FileRouteTypes {
@@ -179,6 +207,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/current-affairs'
+    | '/daily-quiz'
     | '/practice'
     | '/privacy'
     | '/profile'
@@ -186,10 +215,12 @@ export interface FileRouteTypes {
     | '/resources'
     | '/syllabus'
     | '/terms'
+    | '/admin/current-affairs'
     | '/admin/questions'
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
     | '/mock-tests/'
+    | '/api/public/cron-current-affairs'
     | '/mock-tests/ai/$sessionId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -198,6 +229,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/current-affairs'
+    | '/daily-quiz'
     | '/practice'
     | '/privacy'
     | '/profile'
@@ -205,10 +237,12 @@ export interface FileRouteTypes {
     | '/resources'
     | '/syllabus'
     | '/terms'
+    | '/admin/current-affairs'
     | '/admin/questions'
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
     | '/mock-tests'
+    | '/api/public/cron-current-affairs'
     | '/mock-tests/ai/$sessionId'
   id:
     | '__root__'
@@ -217,6 +251,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/current-affairs'
+    | '/daily-quiz'
     | '/practice'
     | '/privacy'
     | '/profile'
@@ -224,10 +259,12 @@ export interface FileRouteTypes {
     | '/resources'
     | '/syllabus'
     | '/terms'
+    | '/admin/current-affairs'
     | '/admin/questions'
     | '/mock-tests/$testId'
     | '/mock-tests/generate'
     | '/mock-tests/'
+    | '/api/public/cron-current-affairs'
     | '/mock-tests/ai/$sessionId'
   fileRoutesById: FileRoutesById
 }
@@ -237,6 +274,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   CurrentAffairsRoute: typeof CurrentAffairsRoute
+  DailyQuizRoute: typeof DailyQuizRoute
   PracticeRoute: typeof PracticeRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
@@ -244,10 +282,12 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   SyllabusRoute: typeof SyllabusRoute
   TermsRoute: typeof TermsRoute
+  AdminCurrentAffairsRoute: typeof AdminCurrentAffairsRoute
   AdminQuestionsRoute: typeof AdminQuestionsRoute
   MockTestsTestIdRoute: typeof MockTestsTestIdRoute
   MockTestsGenerateRoute: typeof MockTestsGenerateRoute
   MockTestsIndexRoute: typeof MockTestsIndexRoute
+  ApiPublicCronCurrentAffairsRoute: typeof ApiPublicCronCurrentAffairsRoute
   MockTestsAiSessionIdRoute: typeof MockTestsAiSessionIdRoute
 }
 
@@ -286,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/current-affairs'
       fullPath: '/current-affairs'
       preLoaderRoute: typeof CurrentAffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daily-quiz': {
+      id: '/daily-quiz'
+      path: '/daily-quiz'
+      fullPath: '/daily-quiz'
+      preLoaderRoute: typeof DailyQuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/practice': {
@@ -337,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/current-affairs': {
+      id: '/admin/current-affairs'
+      path: '/admin/current-affairs'
+      fullPath: '/admin/current-affairs'
+      preLoaderRoute: typeof AdminCurrentAffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/questions': {
       id: '/admin/questions'
       path: '/admin/questions'
@@ -365,6 +419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MockTestsGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/cron-current-affairs': {
+      id: '/api/public/cron-current-affairs'
+      path: '/api/public/cron-current-affairs'
+      fullPath: '/api/public/cron-current-affairs'
+      preLoaderRoute: typeof ApiPublicCronCurrentAffairsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mock-tests/ai/$sessionId': {
       id: '/mock-tests/ai/$sessionId'
       path: '/mock-tests/ai/$sessionId'
@@ -381,6 +442,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   CurrentAffairsRoute: CurrentAffairsRoute,
+  DailyQuizRoute: DailyQuizRoute,
   PracticeRoute: PracticeRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
@@ -388,12 +450,24 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   SyllabusRoute: SyllabusRoute,
   TermsRoute: TermsRoute,
+  AdminCurrentAffairsRoute: AdminCurrentAffairsRoute,
   AdminQuestionsRoute: AdminQuestionsRoute,
   MockTestsTestIdRoute: MockTestsTestIdRoute,
   MockTestsGenerateRoute: MockTestsGenerateRoute,
   MockTestsIndexRoute: MockTestsIndexRoute,
+  ApiPublicCronCurrentAffairsRoute: ApiPublicCronCurrentAffairsRoute,
   MockTestsAiSessionIdRoute: MockTestsAiSessionIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

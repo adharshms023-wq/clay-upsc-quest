@@ -37,6 +37,34 @@ export async function fetchMockTestQuestions(filters: BankFilters) {
   return fetchWithLadder(supabase, filters);
 }
 
+export type CurrentAffairsFilters = {
+  count: number;
+  subjects: string[];
+  difficulty: string | null;
+  sinceDays: number | null;
+};
+
+/** Approved current-affairs questions only, optionally within a recent window. */
+export async function fetchCurrentAffairsQuestions(filters: CurrentAffairsFilters) {
+  const supabase = createPublicClient();
+  const since =
+    filters.sinceDays && filters.sinceDays > 0
+      ? new Date(Date.now() - filters.sinceDays * 86_400_000).toISOString()
+      : null;
+
+  const { data, error } = await supabase.rpc("pick_current_affairs_questions", {
+    _limit: filters.count,
+    ...(filters.subjects.length ? { _subjects: filters.subjects } : {}),
+    ...(filters.difficulty ? { _difficulties: [filters.difficulty] } : {}),
+    ...(since ? { _since: since } : {}),
+  });
+  if (error) throw new Error(error.message);
+
+  const rows = (data ?? []) as QuestionRow[];
+  const questions = shuffle(rows).map(toGenerated).map(shuffleOptions);
+  return { questions, requested: filters.count, available: rows.length, expandedDifficulty: false };
+}
+
 /** Public, read-only coverage summary of the approved question bank. */
 export async function fetchBankStats() {
   const supabase = createPublicClient();

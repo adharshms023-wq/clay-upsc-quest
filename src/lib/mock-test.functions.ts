@@ -27,3 +27,21 @@ export const getBankStats = createServerFn({ method: "GET" }).handler(async () =
   const { fetchBankStats } = await import("./mock-test-bank.server");
   return fetchBankStats();
 });
+
+const caInput = z.object({
+  count: z.number().int().min(1).max(100).default(10),
+  subjects: z.array(z.string()).default([]),
+  difficulty: z.string().nullable().default(null),
+  sinceDays: z.number().int().min(1).max(365).nullable().default(30),
+});
+
+/**
+ * Current-affairs test builder. Reads approved current-affairs questions from
+ * the bank only — never calls AI.
+ */
+export const buildCurrentAffairsTest = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => caInput.parse(input))
+  .handler(async ({ data }) => {
+    const { fetchCurrentAffairsQuestions } = await import("./mock-test-bank.server");
+    return fetchCurrentAffairsQuestions(data);
+  });
