@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Loader2, Save, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -67,7 +67,11 @@ function AdminQuestions() {
       <h1 className="text-balance-tight text-3xl font-extrabold md:text-4xl">Question Bank Admin</h1>
       <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
         AI drafts questions here only. Students never call AI — their mock tests are assembled from the
-        questions you publish below.
+        questions you publish below.{" "}
+        <Link to="/admin/import" className="font-semibold underline">
+          Bulk import from JSON
+        </Link>
+        .
       </p>
 
       <ClayCard className="mt-6">
