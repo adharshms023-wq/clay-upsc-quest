@@ -9,6 +9,7 @@ import { ClayProgress } from "@/components/clay/ClayProgress";
 import { buildMockTest } from "@/lib/mock-test.functions";
 import { useStudy, type MissedQuestion } from "@/context/StudyContext";
 import { cn } from "@/lib/utils";
+import { requestUserFeedback } from "@/lib/feedback";
 
 export const Route = createFileRoute("/practice")({
   head: () => ({
@@ -150,6 +151,7 @@ function PracticePage() {
       if (wrong.length) addMissed(wrong);
       if (correctIds.length) clearMissed(correctIds);
       logPractice(Math.max(0.05, Math.min(1, (Date.now() - startedAt) / 3600000)));
+      window.setTimeout(requestUserFeedback, 450);
     }
   }
 

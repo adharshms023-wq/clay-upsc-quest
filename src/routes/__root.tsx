@@ -15,6 +15,7 @@ import { StudyProvider } from "@/context/StudyContext";
 import { TopNav, BottomNav } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { UserFeedbackPopup } from "@/components/feedback/UserFeedbackPopup";
 
 function NotFoundComponent() {
   return (
@@ -143,6 +144,7 @@ function RootComponent() {
         </main>
         <Footer />
         <BottomNav />
+        <UserFeedbackPopup />
         <Toaster position="top-center" />
       </StudyProvider>
     </QueryClientProvider>
