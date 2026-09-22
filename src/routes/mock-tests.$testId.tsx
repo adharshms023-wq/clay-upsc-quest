@@ -17,6 +17,7 @@ import { ClayProgress } from "@/components/clay/ClayProgress";
 import { useStudy, type TestResult } from "@/context/StudyContext";
 import { mockTests } from "@/data/mockTests";
 import { cn } from "@/lib/utils";
+import { requestUserFeedback } from "@/lib/feedback";
 
 export const Route = createFileRoute("/mock-tests/$testId")({
   head: () => ({
@@ -80,6 +81,7 @@ function TestRunner() {
       setResult(r);
       addResult(r);
       toast.success(auto ? "Time up — test submitted" : "Test submitted");
+      window.setTimeout(requestUserFeedback, 450);
     },
     [test, answers, remaining, result, addResult],
   );

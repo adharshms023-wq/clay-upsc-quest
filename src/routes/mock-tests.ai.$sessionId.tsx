@@ -21,6 +21,7 @@ import { useStudy, type TestResult } from "@/context/StudyContext";
 import { getTest, recordAttempts, type BankQuestion } from "@/lib/questionBank";
 import { recommendStudyPlan } from "@/lib/test-generation.functions";
 import { cn } from "@/lib/utils";
+import { requestUserFeedback } from "@/lib/feedback";
 
 export const Route = createFileRoute("/mock-tests/ai/$sessionId")({
   head: () => ({
@@ -138,6 +139,7 @@ function AiTestRunner() {
       }
       if (document.fullscreenElement) void document.exitFullscreen();
       toast.success(auto ? "Time up — test submitted" : "Test submitted");
+      window.setTimeout(requestUserFeedback, 450);
     },
     [data, result, answers, remaining, sessionId, addResult],
   );
