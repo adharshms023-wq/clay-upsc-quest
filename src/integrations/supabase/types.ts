@@ -220,6 +220,33 @@ export type Database = {
           },
         ]
       }
+      user_feedback: {
+        Row: {
+          additional_feedback: string | null
+          anonymous_id: string
+          created_at: string
+          custom_response: string | null
+          id: string
+          selected_options: string[]
+        }
+        Insert: {
+          additional_feedback?: string | null
+          anonymous_id: string
+          created_at?: string
+          custom_response?: string | null
+          id?: string
+          selected_options: string[]
+        }
+        Update: {
+          additional_feedback?: string | null
+          anonymous_id?: string
+          created_at?: string
+          custom_response?: string | null
+          id?: string
+          selected_options?: string[]
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
