@@ -122,6 +122,60 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          attempt_year: number | null
+          avatar_url: string | null
+          created_at: string
+          current_streak: number
+          daily_study_time: string | null
+          email: string
+          full_name: string
+          id: string
+          longest_streak: number
+          mock_tests_completed: number
+          preparation_level: string | null
+          questions_solved: number
+          topics_completed: number
+          updated_at: string
+          xp: number
+        }
+        Insert: {
+          attempt_year?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number
+          daily_study_time?: string | null
+          email?: string
+          full_name?: string
+          id: string
+          longest_streak?: number
+          mock_tests_completed?: number
+          preparation_level?: string | null
+          questions_solved?: number
+          topics_completed?: number
+          updated_at?: string
+          xp?: number
+        }
+        Update: {
+          attempt_year?: number | null
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number
+          daily_study_time?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          longest_streak?: number
+          mock_tests_completed?: number
+          preparation_level?: string | null
+          questions_solved?: number
+          topics_completed?: number
+          updated_at?: string
+          xp?: number
+        }
+        Relationships: []
+      }
       questions: {
         Row: {
           correct_answer: number
