@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, CheckCircle2, Eye, EyeOff, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
@@ -12,6 +12,15 @@ import { supabase } from "@/integrations/supabase/client";
 type AuthMode = "login" | "signup";
 type PreparationLevel = "Beginner" | "Intermediate" | "Advanced";
 type StudyTime = "Less than 1 hour" | "1–2 hours" | "2–4 hours" | "4+ hours";
+type SignupErrors = {
+  fullName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  terms?: string;
+  attemptYear?: string;
+  form?: string;
+};
 
 const studyTimes: StudyTime[] = ["Less than 1 hour", "1–2 hours", "2–4 hours", "4+ hours"];
 
@@ -73,7 +82,7 @@ function PasswordInput({
   value: string;
   onChange: (value: string) => void;
   autoComplete: string;
-  error?: string;
+  error?: string | undefined;
   onBlur?: () => void;
 }) {
   const [visible, setVisible] = useState(false);
@@ -231,14 +240,14 @@ export function SignupScreen() {
   const [attemptYear, setAttemptYear] = useState("");
   const [level, setLevel] = useState<PreparationLevel | "">("");
   const [agreed, setAgreed] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<SignupErrors>({});
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
   const strength = passwordStrength(password);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const next: Record<string, string> = {};
+    const next: SignupErrors = {};
     if (!fullName.trim()) next.fullName = "Please enter your full name.";
     const emailIssue = emailError(email);
     if (emailIssue) next.email = emailIssue;
@@ -450,11 +459,11 @@ export function ResetPasswordScreen() {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
     const hasRecoveryType = typeof window !== "undefined" && new URLSearchParams(window.location.hash.slice(1)).get("type") === "recovery";
     setRecoveryReady(hasRecoveryType);
     setChecking(false);
-  });
+  }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -473,7 +482,7 @@ export function ResetPasswordScreen() {
     <AuthShell mode="login">
       <div className="mb-5"><p className="text-xs font-bold uppercase text-muted-foreground">Account access</p><h1 id="auth-heading" className="mt-2 text-3xl font-extrabold">Choose a new password</h1><p className="mt-2 text-sm text-muted-foreground">Use at least 8 characters to secure your account.</p></div>
       <ClayCard className="p-5 sm:p-7">
-        {checking ? <p className="text-sm text-muted-foreground" role="status">Checking your reset link…</p> : !recoveryReady ? <div className="space-y-4"><p className="text-sm leading-6 text-muted-foreground">This reset link is no longer valid. Request a new link to continue.</p><ClayButton asChild className="w-full"><Link to="/forgot-password">Request a new reset link</Link></ClayButton></div> : (
+        {checking ? <p className="text-sm text-muted-foreground" role="status">Checking your reset link…</p> : !recoveryReady ? <div className="space-y-4"><p className="text-sm leading-6 text-muted-foreground">This reset link is no longer valid. Request a new link to continue.</p><Link to="/forgot-password" className="clay-press inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[20px] bg-primary px-6 text-[0.95rem] font-semibold text-primary-foreground shadow-[var(--clay-shadow-sm)]">Request a new reset link</Link></div> : (
           <form onSubmit={submit} className="space-y-4">
             <PasswordInput id="new-password" label="New password" value={password} onChange={setPassword} autoComplete="new-password" />
             <PasswordInput id="new-password-confirm" label="Confirm new password" value={confirmPassword} onChange={setConfirmPassword} autoComplete="new-password" />
