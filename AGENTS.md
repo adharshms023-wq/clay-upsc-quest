@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture decisions
+- Store user-facing account details in `public.profiles` with owner-scoped RLS, while authorization roles stay in `public.user_roles`; this keeps profile edits separate from privilege checks.
+- Keep public study routes public and place profile/progress pages under the client-only authenticated layout; Supabase sessions are browser-persisted and unavailable during SSR.
